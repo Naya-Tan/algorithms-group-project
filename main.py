@@ -4,6 +4,7 @@ encrypted_messages = []
 # create a list that will hold all of the signatures 
 signatures = []
 
+
 print("\nRSA keys have been generated.")
 # generate the RSA keys here 
 
@@ -72,9 +73,27 @@ while True:
             print("Bye for now")
             break
             
-       
-
 
 # methods for RSA keys 
+def public_key():
+   # create the public key
+   # return n and e 
+   print()
+   
+def private_key():
+   # create the public key 
+   # return e and d 
+   print()
+   
+
 # methods for encryption and decryption 
+def encrypt(message, N, e):
+   # encrypt with public key 
+   return pow(message, e, N)
+   
+def decrypt(encypted_message, N, d):
+   # decrpyt with private key 
+   return pow(encypted_message, d, N)
+
+
 # methods for authentications 
