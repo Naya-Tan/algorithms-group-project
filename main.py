@@ -26,8 +26,15 @@ def decrypt(encypted_message, N, d): # use private key to decrypt
 
 # methods for authentications 
 
+def sign(message, private_key): # sign a message using a private key
+   n, d = private_key
+   signature = pow(message, d, n)
+   return signature
 
-
+def verify(message, signature, public_key): # verify a signature using a public key
+   n, e = public_key
+   decrypted_signature = pow(signature, e, n)
+   return decrypted_signature == message
 
 
 # create a list that will hold all of the messages that are encrypted 
@@ -54,16 +61,21 @@ while True:
                      print("Message encrypted and sent")
                      print()
                   elif(choice == "2"):
-                  # check if theres a message to authenticate 
-                  # if len(signatures) == 0:
-                  #   print("There are no messages to authenticate")
-                  # else:
-                  #    print("The following messages are available: ")
-                  #    for i in range(len(signatures):
-                  #         print(i, ".", signatures[i], end = "\n")
-                  #   valid = input("Enter your choice")
-                  #   # add checking to see if its valid or not later
-                     print()
+                   #   check if theres a message to authenticate 
+                   if len(signatures) == 0:
+                     print("There are no messages to authenticate")
+                   else:
+                      print("The following messages are available: ")
+                   # for i in range(len(signatures):
+                   #       print(i, ".", signatures[i], end = "\n")
+                      signature = sign(message, private_key)
+                      print("Signature: ", signature)           
+                     #valid = input("Enter your choice")
+                     # checking to see if its valid or not
+                      verified = verify(message, signature, public_key)
+                      print("Verified: ", verified)
+                                   
+                      print()
                   else:
                      break
         
