@@ -15,10 +15,12 @@ def encrypt(message, N, e): # you use public key for encryption
    # need to convert to ascii 
    encrypted_message = pow(message, e, N)
    # turn the message back into a string to return the message 
+   # when you encrypt the message it should be all integers 
    return encrypted_message
    
 def decrypt(encypted_message, N, d): # use private key to decrypt
-   # need to convert to ascii 
+   # comvert the encrypted message which is in all integers 
+   # back into ascii characters in order to return the original message 
    decrypted_message = pow(encypted_message, d, N)
    # turn it back into a string to return the message 
    return decrypted_message
