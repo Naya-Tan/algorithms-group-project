@@ -94,12 +94,13 @@ def decrypt(char, N, d):
 
 # methods for authentications 
 def sign(message, d, N): # sign a message using a private key
-   #n, d = private_key
-   signature = pow(message, d, N)
+   message_int = int.from_bytes(message.encode(), byteorder='big')   
+   signature = pow(message_int, d, N)
    return signature
 
 def verify(message, signature, N, e): # verify a signature using a public key
    #n, e = public_key
+   message_int = int.from_bytes(message.encode(), byteorder='big')
    decrypted_signature = pow(signature, e, N)
    return decrypted_signature == message
 
@@ -138,16 +139,21 @@ while True:
                    else:
                       print("The following messages are available: ")
                       for i in range(len(signatures)):
-                          print(i, ".", len(signatures[i]), end = "\n")
-                      #signature = sign(message, private_key)
-                      #print("Signature: ", signature)           
-                      valid = input("Enter your choice")
+                          print(i + 1, ". Signature: ", signatures[i])
+                      valid = input("Enter your choice: ")
+                      valid = int(valid)
                      # checking to see if its valid or not
-                      #verified = verify(message, signature, public_key)
-                      #print("Verified: ", verified)
-                      if (valid <= len(signatures)):
-                         print("Signature is valid")
-                                   
+                      if 1 <= valid < len(signatures):
+                          #messageVerify = int.from_bytes(message.encode(), byteorder='big')
+                          signatureVerify = int(signatures[valid - 1])
+                          verified = verify(message, signatureVerify, N, e)
+                          if verified == True:
+                              print("Signature is valid")
+                          else:
+                             print("Signature is invalid")
+                      else:
+                          print("Invalid option. Try again!")
+
                       print()
                   else:
                      break
@@ -170,7 +176,8 @@ while True:
                      print()
                    elif (choice == "2"):
                      signature = input("Enter signature: ")
-                     #signatures.append(signature)
+                     signatures.append(str(signature))
+                     signature = sign(signature, d, N)
                      print("Message signed and sent")
                      print()
                    elif (choice == "3"):
