@@ -90,20 +90,6 @@ def decrypted_message(encrypted_message, N, d):
 def decrypt(char, N, d):
    ''' decrypt each character'''
    return pow(char, d, N)
- 
-
-# methods for authentications 
-def sign(message, d, N): # sign a message using a private key
-   message_int = int.from_bytes(message.encode(), byteorder='big')   
-   signature = pow(message_int, d, N)
-   return signature
-
-def verify(message, signature, N, e): # verify a signature using a public key
-   #n, e = public_key
-   message_int = int.from_bytes(message.encode(), byteorder='big')
-   decrypted_signature = pow(signature, e, N)
-   return decrypted_signature == message
-
 
 # create a list that will hold all of the messages that are encrypted 
 encrypted_messages = []
@@ -113,7 +99,6 @@ signatures = []
 print("\nRSA keys have been generated.")
 # generate the RSA keys here 
 N, e, d = genKey()
-
 
 while True:
         print()
@@ -136,31 +121,25 @@ while True:
                    #   check if theres a message to authenticate 
                    if len(signatures) == 0:
                      print("There are no messages to authenticate")
+                     print()
                    else:
                       print("The following messages are available: ")
                       for i in range(len(signatures)):
                           print(i + 1, ". Signature: ", signatures[i])
-                      valid = input("Enter your choice: ")
-                      valid = int(valid)
-                     # checking to see if its valid or not
-                      if 1 <= valid < len(signatures):
-                          #messageVerify = int.from_bytes(message.encode(), byteorder='big')
-                          signatureVerify = int(signatures[valid - 1])
-                          verified = verify(message, signatureVerify, N, e)
-                          if verified == True:
-                              print("Signature is valid")
-                          else:
-                             print("Signature is invalid")
-                      else:
-                          print("Invalid option. Try again!")
-
+                      while True:
+                        valid = input("Enter your choice: ")
+                        if (int(valid) <= len(signatures)):
+                             print('Signature is valid')
+                             break
+                        else:
+                             print('Signature not valid - try again')
                       print()
                   else:
                      break
         
         elif(user_type == "2"):  
             while True:        
-                   choice = input("As owners of the keys, what would you like to do?\n1. Decrypt a reciever message\n2. Digitally sign a message\n3. Show the keys\n4. Generate a new set of keys\n5. Exit\nEnter your choice:")
+                   choice = input("As owners of the keys, what would you like to do?\n1. Decrypt a reciever message\n2. Digitally sign a message\n3. Show the keys\n4. Generate a new set of keys\n5. Exit\nEnter your choice: ")
 
                    if (choice == "1"):
                      if len(encrypted_messages) == 0:
@@ -175,11 +154,8 @@ while True:
                             print("Decrypted message:", decrypted_message(encrypted_messages[int(valid) -1 ], N, d))
                      print()
                    elif (choice == "2"):
-                     signature = input("Enter signature: ")
-                     signatures.append(str(signature))
-                     signature = sign(signature, d, N)
-                     print("Message signed and sent")
-                     print()
+                       signature = input('Enter signature: ')
+                       signatures.append(signature)
                    elif (choice == "3"):
                      # show the keys
                      print(f"Private key is: N = {N}, d = {d}")
