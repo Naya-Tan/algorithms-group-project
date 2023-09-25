@@ -100,6 +100,9 @@ print("\nRSA keys have been generated.")
 # generate the RSA keys here 
 N, e, d = genKey()
 
+# note that if the user decides to generate a new key they cannot decrypt any messages emcrypted before the new key is made 
+# the user can only decrypt messages that are encrypted after the new keys are generated 
+# this is just a RSA prototype 
 while True:
         print()
         user_type = input("Please select your user type:\n1. A public user\n2. The owner of the keys\n3. Exit program\nEnter your choice: ")
